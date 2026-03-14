@@ -1,0 +1,15 @@
+services:
+  falkordb:
+    image: falkordb/falkordb:latest
+    container_name: falkordb
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+      - "7003:3000"
+    volumes:
+      - ./data:/var/lib/falkordb/data
+      - ./users.acl:/etc/falkordb/users.acl
+    environment:
+      - FALKORDB_USERNAME=${FALKORDB_USERNAME}
+      - FALKORDB_PASSWORD=${FALKORDB_PASSWORD}
+      - REDIS_ARGS=--aclfile /etc/falkordb/users.acl

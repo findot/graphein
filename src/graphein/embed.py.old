@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+from typing import Sequence
+
+import ollama
+
+from .chunker import Chunk
+
+
+def embed(text: str) -> Sequence[int | float]:
+    response = ollama.embed(model="nomic-embed-text", input=text)
+    return response.embeddings[0]
+
+
+def embed_chunks(chunks: list[Chunk]) -> list[tuple[Chunk, list[float]]]:
+    texts = [c.text for c in chunks]
+    response = ollama.embed(model="nomic-embed-text", input=texts)
+    return list(zip(chunks, response.embeddings))
